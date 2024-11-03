@@ -1,0 +1,258 @@
+"Asm.fif" include
+// automatically generated from `/Users/junmtan/Library/Application Support/toncli/func-libs/error_codes.func` `/Users/junmtan/Library/Application Support/toncli/func-libs/math.func` `/Users/junmtan/Library/Application Support/toncli/func-libs/stdlib.func` `/Users/junmtan/Documents/GitHub/Personal/nft_collection/func/utils/helpers.func` `/Users/junmtan/Documents/GitHub/Personal/nft_collection/func/utils/params.func` `/Users/junmtan/Documents/GitHub/Personal/nft_collection/func/utils/op-codes.func` `/Users/junmtan/Documents/GitHub/Personal/nft_collection/func/nft-marketplace.func` incl:`/Users/junmtan/Documents/GitHub/Personal/nft_collection/func/op-codes.func` 
+PROGRAM{
+  DECLPROC power
+  DECLPROC sqrt
+  DECLPROC avg
+  DECLPROC exp
+  DECLPROC log2
+  DECLPROC force_chain
+  DECLPROC load_data
+  DECLPROC save_data
+  DECLPROC recv_internal
+  DECLPROC recv_external
+  power PROCREF:<{
+    //  x exponent
+    OVER	//  x exponent x
+    0 EQINT	//  x exponent _3
+    IFJMP:<{	//  x exponent
+      2DROP	// 
+      0 PUSHINT	//  _4=0
+    }>	//  x exponent
+    DUP	//  x exponent exponent
+    0 EQINT	//  x exponent _6
+    IFJMP:<{	//  x exponent
+      2DROP	// 
+      1 PUSHINT	//  _7=1
+    }>	//  x exponent
+    OVER	//  x counter result
+    WHILE:<{
+      OVER	//  x counter result counter
+      1 GTINT	//  x counter result _11
+    }>DO<{	//  x counter result
+      s2 PUSH	//  x counter result x
+      MUL	//  x counter result
+      SWAP	//  x result counter
+      DEC	//  x result counter
+      SWAP	//  x counter result
+    }>	//  x counter result
+    2 1 BLKDROP2	//  result
+  }>
+  sqrt PROCREF:<{
+    //  x
+    DUP	//  x x
+    0 EQINT	//  x _2
+    IFJMP:<{	//  x
+      DROP	// 
+      0 PUSHINT	//  _3=0
+    }>	//  x
+    DUP	//  x x
+    4 LESSINT	//  x _5
+    IFJMP:<{	//  x
+      DROP	// 
+      1 PUSHINT	//  _6=1
+    }>	//  x
+    DUP	//  x x
+    INC	//  x _9
+    1 RSHIFT#	//  x z
+    OVER	//  x z y
+    WHILE:<{
+      2DUP	//  x z y z y
+      LESS	//  x z y _13
+    }>DO<{	//  x z y
+      DROP	//  x z
+      s0 s1 s0 PUSH3	//  x z y x z
+      DIV	//  x z y _14
+      ROT	//  x y _14 z
+      ADD	//  x y _15
+      1 RSHIFT#	//  x y z
+      SWAP	//  x z y
+    }>	//  x z y
+    2 1 BLKDROP2	//  y
+  }>
+  avg PROCREF:<{
+    //  x y
+    ADD	//  _2
+    1 RSHIFT#	//  _4
+  }>
+  exp PROCREF:<{
+    //  x
+    DUP	//  x x
+    -1 GTINT	//  x _2
+    IF:<{	//  x
+      POW2	//  _3
+    }>ELSE<{	//  x
+      1 PUSHINT	//  x _6=1
+      SWAP	//  _6=1 x
+      NEGATE	//  _6=1 _8
+      RSHIFT	//  _3
+    }>
+  }>
+  log2 PROCREF:<{
+    //  x
+    0 PUSHINT	//  x n=0
+    7 PUSHPOW2	//  x n=0 _3=128
+    exp INLINECALLDICT	//  x n=0 _4
+    s2 s(-1) PUXC	//  x n=0 x _4
+    GEQ	//  x n=0 _5
+    IF:<{	//  x n=0
+      DROP	//  x
+      128 RSHIFT#	//  x
+      7 PUSHPOW2	//  x n
+    }>	//  x n
+    64 PUSHINT	//  x n _10=64
+    exp INLINECALLDICT	//  x n _11
+    s2 s(-1) PUXC	//  x n x _11
+    GEQ	//  x n _12
+    IF:<{	//  x n
+      SWAP	//  n x
+      64 RSHIFT#	//  n x
+      SWAP	//  x n
+      64 ADDCONST	//  x n
+    }>	//  x n
+    32 PUSHINT	//  x n _17=32
+    exp INLINECALLDICT	//  x n _18
+    s2 s(-1) PUXC	//  x n x _18
+    GEQ	//  x n _19
+    IF:<{	//  x n
+      SWAP	//  n x
+      32 RSHIFT#	//  n x
+      SWAP	//  x n
+      32 ADDCONST	//  x n
+    }>	//  x n
+    16 PUSHINT	//  x n _24=16
+    exp INLINECALLDICT	//  x n _25
+    s2 s(-1) PUXC	//  x n x _25
+    GEQ	//  x n _26
+    IF:<{	//  x n
+      SWAP	//  n x
+      16 RSHIFT#	//  n x
+      SWAP	//  x n
+      16 ADDCONST	//  x n
+    }>	//  x n
+    8 PUSHINT	//  x n _31=8
+    exp INLINECALLDICT	//  x n _32
+    s2 s(-1) PUXC	//  x n x _32
+    GEQ	//  x n _33
+    IF:<{	//  x n
+      SWAP	//  n x
+      8 RSHIFT#	//  n x
+      SWAP	//  x n
+      8 ADDCONST	//  x n
+    }>	//  x n
+    4 PUSHINT	//  x n _38=4
+    exp INLINECALLDICT	//  x n _39
+    s2 s(-1) PUXC	//  x n x _39
+    GEQ	//  x n _40
+    IF:<{	//  x n
+      SWAP	//  n x
+      4 RSHIFT#	//  n x
+      SWAP	//  x n
+      4 ADDCONST	//  x n
+    }>	//  x n
+    2 PUSHINT	//  x n _45=2
+    exp INLINECALLDICT	//  x n _46
+    s2 s(-1) PUXC	//  x n x _46
+    GEQ	//  x n _47
+    IF:<{	//  x n
+      SWAP	//  n x
+      2 RSHIFT#	//  n x
+      SWAP	//  x n
+      2 ADDCONST	//  x n
+    }>	//  x n
+    1 PUSHINT	//  x n _52=1
+    exp INLINECALLDICT	//  x n _53
+    s1 s2 XCHG	//  n x _53
+    GEQ	//  n _54
+    IF:<{	//  n
+      INC	//  n
+    }>	//  n
+  }>
+  force_chain PROC:<{
+    //  addr
+    REWRITESTDADDR	//  _8 _9
+    DROP	//  wc
+    0 EQINT	//  _6
+    333 THROWIFNOT
+  }>
+  load_data PROCINLINE:<{
+    // 
+    c4 PUSH	//  _1
+    CTOS	//  ds
+    LDMSGADDR	//  _6 _5
+    DROP	//  _3
+  }>
+  save_data PROCINLINE:<{
+    //  owner_address
+    NEWC	//  owner_address _1
+    SWAP	//  _1 owner_address
+    STSLICER	//  _2
+    ENDC	//  _3
+    c4 POP
+  }>
+  recv_internal PROC:<{
+    //  msg_value in_msg_full in_msg_body
+    s2 POP	//  in_msg_body in_msg_full
+    OVER	//  in_msg_body in_msg_full in_msg_body
+    SEMPTY	//  in_msg_body in_msg_full _3
+    IFJMP:<{	//  in_msg_body in_msg_full
+      2DROP	// 
+    }>	//  in_msg_body in_msg_full
+    CTOS	//  in_msg_body cs
+    4 LDU	//  in_msg_body flags cs
+    SWAP
+    1 PUSHINT	//  in_msg_body cs flags _10=1
+    AND	//  in_msg_body cs _11
+    IFJMP:<{	//  in_msg_body cs
+      2DROP	// 
+    }>	//  in_msg_body cs
+    LDMSGADDR	//  in_msg_body sender_address cs
+    load_data INLINECALLDICT	//  in_msg_body sender_address cs owner_address
+    s1 s2 XCHG	//  in_msg_body cs sender_address owner_address
+    SDEQ	//  in_msg_body cs _18
+    401 THROWIFNOT
+    SWAP	//  cs in_msg_body
+    32 LDU	//  cs op in_msg_body
+    SWAP	//  cs in_msg_body op
+    1 EQINT	//  cs in_msg_body _25
+    IF:<{	//  cs in_msg_body
+      LDVARUINT16	//  cs _89 _88
+      DROP	//  cs amount
+      SWAP	//  amount cs
+      LDREF	//  amount _31 cs
+      LDREF	//  amount _31 _93 _92
+      DROP	//  amount state_init body
+      OVER	//  amount state_init body state_init
+      HASHCU	//  amount state_init body state_init_hash
+      0 PUSHINT	//  amount state_init body state_init_hash _38=0
+      NEWC	//  amount state_init body state_init_hash _38=0 _39
+      8 STI	//  amount state_init body state_init_hash _41
+      256 STU	//  amount state_init body _43
+      ENDC	//  amount state_init body _44
+      CTOS	//  amount state_init body dest_address
+      7 PUSHINT	//  amount state_init body dest_address _51
+      4 PUSHINT	//  amount state_init body dest_address _51 _52=4
+      24 PUSHINT	//  amount state_init body dest_address _51 _52=4 _53=24
+      NEWC	//  amount state_init body dest_address _51 _52=4 _53=24 _54
+      6 STU	//  amount state_init body dest_address _51 _52=4 _56
+      3 STU	//  amount state_init body dest_address _51 _58
+      ROT	//  amount state_init body _51 _58 dest_address
+      STSLICER	//  amount state_init body _51 _59
+      s0 s4 XCHG2	//  _51 state_init body _59 amount
+      STGRAMS	//  _51 state_init body _60
+      s1 s3 XCHG	//  body state_init _51 _60
+      108 STU	//  body state_init _76
+      STREF	//  body _77
+      STREF	//  msg
+      ENDC	//  _79
+      1 PUSHINT	//  _79 _80=1
+      SENDRAWMSG
+    }>ELSE<{
+      2DROP	// 
+    }>
+  }>
+  recv_external PROC:<{
+    //  in_msg
+    DROP	// 
+  }>
+}END>c

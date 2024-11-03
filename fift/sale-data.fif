@@ -1,0 +1,21 @@
+"TonUtil.fif" include
+
+// Define constants for sale
+"EQDlT07NpSh0uj-aSBkF2TRxOqR2nw0ErOQsA6TYakr1-FxP" constant sale_owner_address
+
+."Deploying with sale owner address:" sale_owner_address type cr
+sale_owner_address $>smca 0= abort"Specify valid owner address"
+drop // Dropping address flags
+
+<b
+  -rot Addr, // sale owner address
+  <b "sale_data.json" $, b> ref, // sale content
+b> constant sale_payload
+
+<b
+  1 32 u, // op deploy_sale
+  12345 64 u, // query_id
+  0 64 u, // sale_idx
+  50000000 Gram, // Storing forward_amount for sale deployment
+  sale_payload ref, // Storing content ref
+b> 

@@ -1,0 +1,21 @@
+"TonUtil.fif" include
+
+// Define constants for marketplace
+"EQDlT07NpSh0uj-aSBkF2TRxOqR2nw0ErOQsA6TYakr1-FxP" constant marketplace_owner_address
+
+."Deploying with marketplace owner address:" marketplace_owner_address type cr
+marketplace_owner_address $>smca 0= abort"Specify valid owner address"
+drop // Dropping address flags
+
+<b
+  -rot Addr, // marketplace owner address
+  <b "marketplace_data.json" $, b> ref, // marketplace content
+b> constant marketplace_payload
+
+<b
+  1 32 u, // op deploy_marketplace
+  12345 64 u, // query_id
+  0 64 u, // marketplace_idx
+  50000000 Gram, // Storing forward_amount for marketplace deployment
+  marketplace_payload ref, // Storing content ref
+b> 
